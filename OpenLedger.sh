@@ -120,7 +120,7 @@ show_menu() {
     echo -e "    ${CYAN}2.${RESET} ${STOP} Stop OpenLedger Containers"
     echo -e "    ${CYAN}3.${RESET} ${INSTALL} Start OpenLedger Node"
     echo -e "    ${CYAN}4.${RESET} ${EXIT} Exit"
-    echo -ne "${YELLOW}Enter your choice [1-4]: ${RESET}"
+    echo -ne "    ${YELLOW}Enter your choice [1-4]: ${RESET}"
 }
 
 # ----------------------------
