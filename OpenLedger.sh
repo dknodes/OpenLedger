@@ -22,6 +22,37 @@ EXIT="🚪"
 INFO="ℹ️"
 
 # ----------------------------
+# Check if packages are already installed
+# ----------------------------
+
+check_package_installed() {
+    dpkg -l | grep -i $1 &>/dev/null
+    if [ $? -eq 0 ]; then
+        echo -e "${CHECKMARK} $1 is already installed.${RESET}"
+    else
+        echo -e "${ERROR} $1 is not installed. Installing...${RESET}"
+        return 1
+    fi
+    return 0
+}
+
+# ----------------------------
+# Install required packages if they are not installed
+# ----------------------------
+
+install_required_packages() {
+    packages=("unzip" "libasound2" "libgtk-3-0" "libnotify4" "libnss3" "libxss1" "libxtst6" "xdg-utils" "libatspi2.0-0" "libsecret-1-0" "libgbm1" "desktop-file-utils")
+    for package in "${packages[@]}"; do
+        if ! dpkg -l | grep -i $package &>/dev/null; then
+            echo -e "${ERROR} $package is not installed. Installing...${RESET}"
+            sudo apt-get install -y $package
+        else
+            echo -e "${CHECKMARK} $package is already installed.${RESET}"
+        fi
+    done
+}
+
+# ----------------------------
 # Install Docker and Docker Compose
 # ----------------------------
 install_docker() {
@@ -33,7 +64,6 @@ install_docker() {
     sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
     echo -e "${CHECKMARK} Docker and Docker Compose installed successfully.${RESET}"
-    read -p "Press Enter to continue..."
 }
 
 # ----------------------------
@@ -51,7 +81,7 @@ stop_openledger() {
 # ----------------------------
 install_openledger() {
     echo -e "${INSTALL} Installing OpenLedger...${RESET}"
-    sudo apt-get install -y unzip libasound2 libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils libatspi2.0-0 libsecret-1-0 libgbm1 desktop-file-utils
+    install_required_packages
 
     # Download OpenLedger
     wget https://cdn.openledger.xyz/openledger-node-1.0.0-linux.zip
