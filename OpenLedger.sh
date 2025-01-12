@@ -42,7 +42,7 @@ check_package_installed() {
 
 install_required_packages() {
     sudo apt update && sudo apt upgrade -y
-    packages=("unzip" "libasound2" "libgtk-3-0" "libnotify4" "libnss3" "libxss1" "libxtst6" "xdg-utils" "libatspi2.0-0" "libsecret-1-0" "libgbm1" "desktop-file-utils")
+    packages=("unzip" "libasound2" "libasound2t64" "libgtk-3-0" "libnotify4" "libnss3" "libxss1" "libxtst6" "xdg-utils" "libatspi2.0-0" "libsecret-1-0" "libgbm1" "desktop-file-utils")
     for package in "${packages[@]}"; do
         if ! dpkg -l | grep -i $package &>/dev/null; then
             echo -e "${ERROR} $package is not installed. Installing...${RESET}"
@@ -51,7 +51,6 @@ install_required_packages() {
             echo -e "${CHECKMARK} $package is already installed.${RESET}"
         fi
     done
-    sudo apt-get install libasound2 -y
 }
 
 # ----------------------------
