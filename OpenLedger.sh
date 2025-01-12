@@ -22,35 +22,16 @@ EXIT="🚪"
 INFO="ℹ️"
 
 # ----------------------------
-# Check if packages are already installed
-# ----------------------------
-
-check_package_installed() {
-    dpkg -l | grep -i $1 &>/dev/null
-    if [ $? -eq 0 ]; then
-        echo -e "${CHECKMARK} $1 is already installed.${RESET}"
-    else
-        echo -e "${ERROR} $1 is not installed. Installing...${RESET}"
-        return 1
-    fi
-    return 0
-}
-
-# ----------------------------
 # Install Docker and Docker Compose
 # ----------------------------
 install_docker() {
     echo -e "${INSTALL} Installing Docker and Docker Compose...${RESET}"
     sudo apt update && sudo apt upgrade -y
-    if ! check_package_installed "docker.io"; then
-        sudo apt install docker.io -y
-        sudo systemctl start docker
-        sudo systemctl enable docker
-    fi
-    if ! check_package_installed "docker-compose"; then
-        sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-    fi
+    sudo apt install docker.io -y
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
     echo -e "${CHECKMARK} Docker and Docker Compose installed successfully.${RESET}"
 }
 
@@ -68,9 +49,7 @@ stop_openledger() {
 # ----------------------------
 install_openledger() {
     echo -e "${INSTALL} Installing OpenLedger...${RESET}"
-    # Check if unzip is installed
-    check_package_installed "unzip" || sudo apt install unzip -y
-    check_package_installed "libasound2" || sudo apt-get install libasound2 -y
+    sudo apt-get install -y unzip libasound2 libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils libatspi2.0-0 libsecret-1-0 libgbm1 desktop-file-utils
 
     # Download OpenLedger
     wget https://cdn.openledger.xyz/openledger-node-1.0.0-linux.zip
@@ -78,7 +57,6 @@ install_openledger() {
     # Install OpenLedger
     unzip openledger-node-1.0.0-linux.zip
     sudo dpkg -i openledger-node-1.0.0.deb
-    sudo apt-get install desktop-file-utils
 
     echo -e "${CHECKMARK} OpenLedger installed successfully.${RESET}"
 }
