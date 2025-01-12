@@ -1,6 +1,4 @@
 # OpenLedger
-OpenLedger Node 
-
 
 # Registration and X-Server Installation
 
