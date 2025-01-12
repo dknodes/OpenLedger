@@ -41,6 +41,7 @@ check_package_installed() {
 # ----------------------------
 
 install_required_packages() {
+    sudo apt update && sudo apt upgrade -y
     packages=("unzip" "libasound2" "libgtk-3-0" "libnotify4" "libnss3" "libxss1" "libxtst6" "xdg-utils" "libatspi2.0-0" "libsecret-1-0" "libgbm1" "desktop-file-utils")
     for package in "${packages[@]}"; do
         if ! dpkg -l | grep -i $package &>/dev/null; then
@@ -50,6 +51,7 @@ install_required_packages() {
             echo -e "${CHECKMARK} $package is already installed.${RESET}"
         fi
     done
+    sudo apt-get install libasound2 -y
 }
 
 # ----------------------------
@@ -57,7 +59,6 @@ install_required_packages() {
 # ----------------------------
 install_docker() {
     echo -e "${INSTALL} Installing Docker and Docker Compose...${RESET}"
-    sudo apt update && sudo apt upgrade -y
     sudo apt install docker.io -y
     sudo systemctl start docker
     sudo systemctl enable docker
@@ -89,6 +90,8 @@ install_openledger() {
     # Install OpenLedger
     unzip openledger-node-1.0.0-linux.zip
     sudo dpkg -i openledger-node-1.0.0.deb
+    
+    install_docker
 
     echo -e "${CHECKMARK} OpenLedger installed successfully.${RESET}"
     read -p "Press Enter to continue..."
