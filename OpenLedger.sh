@@ -33,6 +33,7 @@ install_docker() {
     sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
     echo -e "${CHECKMARK} Docker and Docker Compose installed successfully.${RESET}"
+    read -p "Press Enter to continue..."
 }
 
 # ----------------------------
@@ -42,6 +43,7 @@ stop_openledger() {
     echo -e "${STOP} Stopping OpenLedger containers...${RESET}"
     docker stop opl_scraper opl_worker
     echo -e "${CHECKMARK} OpenLedger containers stopped.${RESET}"
+    read -p "Press Enter to continue..."
 }
 
 # ----------------------------
@@ -59,6 +61,7 @@ install_openledger() {
     sudo dpkg -i openledger-node-1.0.0.deb
 
     echo -e "${CHECKMARK} OpenLedger installed successfully.${RESET}"
+    read -p "Press Enter to continue..."
 }
 
 # ----------------------------
@@ -68,6 +71,7 @@ start_openledger() {
     echo -e "${PROGRESS} Starting OpenLedger Node...${RESET}"
     openledger-node --no-sandbox
     echo -e "${CHECKMARK} OpenLedger Node started.${RESET}"
+    read -p "Press Enter to continue..."
 }
 
 # ----------------------------
@@ -123,7 +127,7 @@ while true; do
             ;;
         *)
             echo -e "${ERROR} Invalid option. Please try again.${RESET}"
-            read -p "Press enter to continue..."
+            read -p "Press Enter to continue..."
             ;;
     esac
 done
